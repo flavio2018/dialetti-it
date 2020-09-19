@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 def start(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Ciaooo!")
 
 def echo(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text=update.message.text)
@@ -16,9 +16,18 @@ def echo(update, context):
 # define callback functions to be nested
 
 def sample(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Manda l'audio fra")
-    print('qui ok')
+    reply_keyboard = [['Bari', 'Lecce']]
     
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Scegli il comune del tuo dialetto")
+    reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
+
+    return COMUNE
+    
+def comune(update, context):
+    comune = update.message.text
+    print(comune)
+    update.message.reply_text('Grande fra, ora manda l\'audio',
+                              reply_markup=ReplyKeyboardRemove())
     return VOICE
     
 def audio(update, context):
@@ -36,18 +45,18 @@ def audio(update, context):
 def cancel(update, context):
     user = update.message.from_user
     logger.info("User %s canceled the conversation.", user.first_name)
-    update.message.reply_text('Bye! I hope we can talk again some day.',
-                              reply_markup=ReplyKeyboardRemove())
+    update.message.reply_text('Oh no! :(')
 
     return ConversationHandler.END
 
-VOICE = 0
+VOICE, COMUNE = range(2)
 
 conv_handler = ConversationHandler(
     entry_points=[CommandHandler('sample', sample)],
     
     states = {
-        0: [MessageHandler(Filters.audio | Filters.voice, audio)]
+        COMUNE: [MessageHandler(Filters.text & ~Filters.command, comune)],
+        VOICE: [MessageHandler(Filters.audio | Filters.voice, audio)]
         },
     
     fallbacks = [CommandHandler('cancel', cancel)]

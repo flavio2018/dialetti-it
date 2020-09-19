@@ -1,0 +1,8 @@
+Mappa Italia SVG
+https://www.highcharts.com/blog/snippets/italy-regional-map-template/
+
+limits_IT_provinces
+https://github.com/openpolis/geojson-italy
+
+Coordinate Comuni IT
+https://github.com/MatteoHenryChinaski/Comuni-Italiani-2018-Sql-Json-excel
