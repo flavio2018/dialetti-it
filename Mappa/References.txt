@@ -1,0 +1,5 @@
+Mappa Italia SVG
+https://www.highcharts.com/blog/snippets/italy-regional-map-template/
+
+limits_IT_provinces
+https://github.com/openpolis/geojson-italy
