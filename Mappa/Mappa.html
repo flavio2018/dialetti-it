@@ -1,3 +1,5 @@
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
    crossorigin=""/>
@@ -6,8 +8,12 @@
    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
    crossorigin=""></script>
 <div id="map"></div>
+<script src="jquery-3.5.1.js"></script>
 <script src="limits_IT_provinces.geojson"></script>
-
+<div id="pointer-button">
+	<button>Query</button>
+	<span id="query_result"></span>
+</div>
 <!-- <script>
 	#### L.map('nome dell'id)
 	var mymap = L.map('mapid').setView([51.505, -0.09], 13);
@@ -67,14 +73,50 @@
 	function resetHighlight(e) {
 		geojson.resetStyle(e.target);
 	}
+
 	function zoomToFeature(e) {
 		map.fitBounds(e.target.getBounds());
 	}
+
+	function hello() {
+		console.log("hello")
+	}
+
+	function DBquery(e) {
+		$.ajax({
+				url: 'http://localhost:8080/simple_query',
+				data: {
+					columns: "*",
+					tables: "Regioni",
+					conditions: "Regioni.nome_regione = 'Piemonte'"
+				},
+				dataType: "jsonp",
+				cache: false,
+				timeout: 5000,
+				success: function(data) {
+					var res = data;
+					$("#query_result").html(JSON.stringify(res));
+				},
+				error: function (xhr, status, error) {
+	            	console.log('Error: ' + error.message + ", status: " + status);
+				},
+			});
+	}
+
+	function adjustZoom(e) {
+		if (e.target.getBounds() == map.getBounds()) {
+			map.zoomOut()
+		}
+		else {
+			zoomToFeature(e);
+		}
+	}
+
 	function onEachFeature(feature, layer) {
 		layer.on({
 			mouseover: highlightFeature,
 			mouseout: resetHighlight,
-			click: zoomToFeature
+			click: adjustZoom
 		});
 	}
 
@@ -82,5 +124,7 @@
 		//style: style,
 		onEachFeature: onEachFeature
 	}).addTo(map);
+
+	$("#pointer-button").click(DBquery);
 	
 </script>
