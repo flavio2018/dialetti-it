@@ -37,7 +37,7 @@ debug_handler = ext.CommandHandler('debug', debug)
 def sample(update, context):
 
     reply_keyboard = [['Bari', 'Lecce']]
-    
+
     context.bot.send_message(chat_id=update.effective_chat.id, text="Scegli il comune del tuo dialetto")
     reply_markup=tg.ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
 
@@ -63,7 +63,7 @@ def audio(update, context):
     audio_file.download('audio_file.mp3')
     logger.info("User %s sent an audio file", user.first_name)
     update.message.reply_text('Grazie bomber')
-    
+
     return ext.ConversationHandler.END
 
 
@@ -79,12 +79,12 @@ VOICE, COMUNE = range(2)
 
 conv_handler = ext.ConversationHandler(
     entry_points=[ext.CommandHandler('sample', sample)],
-    
+
     states = {
         COMUNE: [ext.MessageHandler(ext.Filters.text & ~ext.Filters.command, comune)],
         VOICE: [ext.MessageHandler(ext.Filters.audio | ext.Filters.voice, audio)]
         },
-    
+
     fallbacks = [ext.CommandHandler('cancel', cancel)]
     )
 
@@ -98,3 +98,6 @@ dispatcher.add_handler(conv_handler)
 updater.start_polling()
 
 updater.idle()
+
+
+# Ciao pep
