@@ -88,7 +88,10 @@ conv_handler = ext.ConversationHandler(
     fallbacks = [ext.CommandHandler('cancel', cancel)]
     )
 
-updater = ext.Updater(token='737649334:AAHE_ixL95-wTBFrKvYH4x4ycoj-IwRgYKA', use_context=True)
+with open('token', 'r') as tok_f:
+	token = tok_f.read().strip() 
+
+updater = ext.Updater(token=token, use_context=True)
 dispatcher = updater.dispatcher
 
 dispatcher.add_handler(start_handler)
