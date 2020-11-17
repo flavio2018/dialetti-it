@@ -1,1 +1,1 @@
-web: python3 bot_dialetti.py  
+web: python3 prova.py  
