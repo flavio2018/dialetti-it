@@ -1,5 +1,5 @@
-import logging
 from telegram import ext
+import logging
 from bot.handlers import *
 from bot.token import TOKEN
 import os
