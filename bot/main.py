@@ -1,7 +1,7 @@
-from telegram import ext
 import logging
+from telegram import ext
 from bot.handlers import *
-from bot.token import TOKEN
+from bot.config import TOKEN
 import os
 
 # Set up the logger
