@@ -1,8 +1,10 @@
+import os
+import sys
+sys.path.insert(1, "bot/")
 import logging
 from telegram import ext
-from bot.handlers import *
-from bot.token import TOKEN
-import os
+import handlers
+from config import TOKEN
 
 # Set up the logger
 logging.basicConfig(
@@ -17,7 +19,8 @@ dispatcher = updater.dispatcher
 
 
 for handler_name in os.listdir("bot/handlers/"):
-    dispatcher.add_handler(exec(handler_name.handler))
+    if ".py" in handler_name:
+        dispatcher.add_handler(eval("handlers." + handler_name[:-3]).handler)
 
 # Start the Bot
 updater.start_polling()

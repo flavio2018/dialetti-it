@@ -1,8 +1,10 @@
+import os
+import sys
+sys.path.insert(1, "bot/")
 import logging
 from telegram import ext
-from bot.handlers import *
-from bot.config import TOKEN
-import os
+import handlers
+from config import TOKEN
 
 # Set up the logger
 logging.basicConfig(
@@ -20,7 +22,8 @@ dispatcher = updater.dispatcher
 
 # Add the handlers
 for handler_name in os.listdir("bot/handlers/"):
-    dispatcher.add_handler(eval(handler_name.handler))
+    if ".py" in handler_name:
+        dispatcher.add_handler(eval("handlers." + handler_name[:-3]).handler)
 
 # Start the Bot
 updater.start_webhook(listen="0.0.0.0",
